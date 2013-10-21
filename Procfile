@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath="$PWD/bleeding" config.wsgi:application
