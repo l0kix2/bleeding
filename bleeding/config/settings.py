@@ -117,16 +117,19 @@ class Common(Configuration):
 
     ########## DATABASE CONFIGURATION
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-    DATABASES = values.DatabaseURLValue('postgres://localhost/bleeding')
+    DATABASES = values.DatabaseURLValue(
+        'sqlite:////vagrant/sqlite/db'
+        #'postgres://localhost/bleeding'
+    )
     ########## END DATABASE CONFIGURATION
 
     ########## CACHING
     # Do this here because thanks to django-pylibmc-sasl and pylibmc memcacheify is painful to install on windows.
     # memcacheify is what's used in Production
     CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': ''
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': ''
         }
     }
     ########## END CACHING
@@ -173,9 +176,9 @@ class Common(Configuration):
     )
 
     TEMPLATE_LOADERS = (
-            'django.template.loaders.filesystem.Loader',
-            'django.template.loaders.app_directories.Loader',
-        )
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )
 
     # See: http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
     CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -285,8 +288,12 @@ class Local(Common):
     ########## End mail settings
 
     ########## django-debug-toolbar
-    MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES + ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-    INSTALLED_APPS += ('debug_toolbar',)
+    MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES + (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
 
     INTERNAL_IPS = ('127.0.0.1',)
 
